@@ -19,7 +19,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"os"
 	"os/exec"
+	"path"
 	"sync"
 	"syscall"
 	"unsafe"
@@ -50,9 +52,10 @@ func main() {
 	}
 
 	// You can generate a keypair with 'ssh-keygen -t rsa'
-	privateBytes, err := ioutil.ReadFile("id_rsa")
+	id_rsa := path.Join(path.Dir(os.Args[0]), "id_rsa")
+	privateBytes, err := ioutil.ReadFile(id_rsa)
 	if err != nil {
-		log.Fatal("Failed to load private key (./id_rsa)")
+		log.Fatal("Failed to load private key (%v)", id_rsa)
 	}
 
 	private, err := ssh.ParsePrivateKey(privateBytes)
